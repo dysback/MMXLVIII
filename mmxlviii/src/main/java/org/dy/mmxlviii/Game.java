@@ -198,7 +198,7 @@ public class Game {
                     if(rb > 0 && table[rb-1][c] > 0 && table[rb][c] == table[rb-1][c]) {
                         table[rb-1][c] *= 2;
                         table[rb][c] = 0;
-                        points += table[rb+1][c];
+                        points += table[rb-1][c];
                         merged = true;
                         moved = true;
                     }                    
