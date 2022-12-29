@@ -18,6 +18,7 @@ public class Game {
             }
         }
         addRandomNumber();
+        addRandomNumber();
     }
 
     public Game() {
@@ -66,16 +67,21 @@ public class Game {
     }
 
     public Boolean moveLeft() {
+        Boolean moved = false;
         for(int r = 0; r < SIZE; r++) {
             Boolean merged = false;
             for(int c = 0; c < SIZE; c++) {
                 int cb;
+                if(table[r][c] == 0) {
+                    continue;
+                }
                 for(cb = c; cb > 0; cb--) {
                     if(table[r][cb-1] > 0) {
                         break;
                     }
                     table[r][cb-1] = table[r][cb];
                     table[r][cb] = 0;
+                    moved = true;
                 }
                 if(!merged) {
                     if(cb > 0 && table[r][cb-1] > 0 && table[r][cb] == table[r][cb-1]) {
@@ -83,55 +89,129 @@ public class Game {
                         table[r][cb] = 0;
                         points += table[r][cb-1];
                         merged = true;
+                        moved = true;
                     }
-                    
                 } else {
                     merged = false;
                 }
-
             }
-            
         }
-        addRandomNumber();
-        moveNr++;
-        return true;
-
-
+        if(moved) {
+            addRandomNumber();
+            moveNr++;
+        }
+        return moved;
     }
     
     public Boolean moveRight() {
+        Boolean moved = false;
         for(int r = 0; r < SIZE; r++) {
             Boolean merged = false;
-            for(int c = SIZE; c > -1; c--) {
+            for(int c = SIZE - 1; c > -1; c--) {
                 int cb;
+                if(table[r][c] == 0) {
+                    continue;
+                }
                 for(cb = c; cb < SIZE-1; cb++) {
                     if(table[r][cb+1] > 0) {
                         break;
                     }
                     table[r][cb+1] = table[r][cb];
                     table[r][cb] = 0;
+                    moved = true;
                 }
                 if(!merged) {
                     if(cb < SIZE-1 && table[r][cb+1] > 0 && table[r][cb] == table[r][cb+1]) {
                         table[r][cb+1] *= 2;
                         table[r][cb] = 0;
-                        merged = true;
                         points += table[r][cb+1];
+                        merged = true;
+                        moved = true;
                     }
-                    
                 } else {
                     merged = false;
                 }
-
             }
-            
         }
-        addRandomNumber();
-        moveNr++;
-        return true;
-
+        if(moved) {
+            addRandomNumber();
+            moveNr++;
+        }
+        return moved;
     }
 
+    public Boolean moveDown() {
+        Boolean moved = false;
+        for(int c = 0; c < SIZE; c++) {
+            Boolean merged = false;
+            for(int r = SIZE - 1; r > -1; r--) {
+                int rb;
+                if(table[r][c] == 0) {
+                    continue;
+                }
+                for(rb = r; rb < SIZE - 1; rb++) {
+                    if(table[rb+1][c] > 0) {
+                        break;
+                    }
+                    table[rb+1][c] = table[rb][c];
+                    table[rb][c] = 0;
+                    moved = true;
+                }
+                if(!merged) {
+                    if(rb < SIZE-1 && table[rb+1][c] > 0 && table[rb][c] == table[rb+1][c]) {
+                        table[rb+1][c] *= 2;
+                        table[rb][c] = 0;
+                        points += table[rb+1][c];
+                        merged = true;
+                        moved = true;
+                    }                    
+                } else {
+                    merged = false;
+                }
+            }
+        }
+        if(moved) {
+            addRandomNumber();
+            moveNr++;
+        }
+        return moved;
+    }
     
+    public Boolean moveUp() {
+        Boolean moved = false;
+        for(int c = 0; c < SIZE; c++) {
+            Boolean merged = false;
+            for(int r = 0; r < SIZE; r++) {
+                int rb;
+                if(table[r][c] == 0) {
+                    continue;
+                }
+                for(rb = r; rb > 0; rb--) {
+                    if(table[rb-1][c] > 0) {
+                        break;
+                    }
+                    table[rb-1][c] = table[rb][c];
+                    table[rb][c] = 0;
+                    moved = true;
+                }
+                if(!merged) {
+                    if(rb > 0 && table[rb-1][c] > 0 && table[rb][c] == table[rb-1][c]) {
+                        table[rb-1][c] *= 2;
+                        table[rb][c] = 0;
+                        points += table[rb+1][c];
+                        merged = true;
+                        moved = true;
+                    }                    
+                } else {
+                    merged = false;
+                }
+            }
+        }
+        if(moved) {
+            addRandomNumber();
+            moveNr++;
+        }
+        return moved;
+    }
 
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController 
-class ws2048 {
+class Ws2048 {
 
 
 
@@ -30,8 +30,6 @@ class ws2048 {
     {  
         MmxlviiiApplication.game.moveLeft();
         return MmxlviiiApplication.game.getTable();
-        
-        
     }
 
     @RequestMapping(method=RequestMethod.GET, path="/move-right") 
@@ -39,9 +37,20 @@ class ws2048 {
     {  
         MmxlviiiApplication.game.moveRight();
         return MmxlviiiApplication.game.getTable();
-        
-        
     }
 
+    @RequestMapping(method=RequestMethod.GET, path="/move-down") 
+    public int[][] MoveDown()  
+    {  
+        MmxlviiiApplication.game.moveDown();
+        return MmxlviiiApplication.game.getTable();
+    }
+
+    @RequestMapping(method=RequestMethod.GET, path="/move-up") 
+    public int[][] MoveUp()  
+    {  
+        MmxlviiiApplication.game.moveUp();
+        return MmxlviiiApplication.game.getTable();
+    }
 
 }
