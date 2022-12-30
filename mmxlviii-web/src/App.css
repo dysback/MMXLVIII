@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.App-lower {
+  background-color: khaki;
+}
+
+.App-low {
+  background-color: yellow;
+}
+
+.App-high {
+  background-color: orange;
+} 
+
+.App-higher {
+  background-color: chocolate;
+}
+
+.App-empty {
+  background-color: lightgray;
+}
+
+.App #table {
+  background-color:darkgrey;
+  border-color: darkgray;
+}

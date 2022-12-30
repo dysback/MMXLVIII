@@ -70,10 +70,28 @@ class Table extends React.Component {
     })
   }
   
+  HandleKeyPress = (e) => {
+    console.log("E: ", e);
+    switch(e.code) {
+      case "ArrowRight":
+        this.MoveRight();
+        break;
+      case "ArrowLeft":
+        this.MoveLeft();
+        break;
+      case "ArrowDown":
+        this.MoveDown();
+        break;
+      case "ArrowUp":
+        this.MoveUp();
+
+    }
+  }
+
   render() {
     console.log("R:", this.state.table);
     return (
-      <div className="App">
+      <div className="App" onKeyDown={this.HandleKeyPress}>
         <table id="table">
           <tbody>
             { this.state.table.map((v, k) => {
@@ -90,14 +108,14 @@ class Table extends React.Component {
             <button  onClick={this.StartGame}>Start New Game</button>
           </div>
           <div>
-            <button  onClick={this.MoveUp}>Up</button>
+            <button  onClick={this.MoveUp}>Up A</button>
           </div>
           <div>
-            <button  onClick={this.MoveLeft}>Left</button>
-            <button  onClick={this.MoveRight}>Right</button>
+            <button  onClick={this.MoveLeft}>&lt;- Left</button>
+            <button  onClick={this.MoveRight}>Right -&gt;</button>
           </div>
           <div>
-            <button  onClick={this.MoveDown}>Down</button>
+            <button  onClick={this.MoveDown}>Down V</button>
           </div>
         </div>
         
@@ -107,8 +125,33 @@ class Table extends React.Component {
 }
 
 const Cell = ({number}) => {
-  
-  return <td>{number == 0 ? "" : number}</td>;
+  var cls = "";
+  switch(number) {
+    case 2:
+    case 4:
+    case 8:
+      cls = "App-lower";
+      break;
+    case 16:
+    case 32:
+    case 64:
+      cls = "App-low";
+      break;
+    case 128:
+    case 256:
+    case 512:
+      cls = "App-high";
+      break;
+    case 1024:
+    case 2048:
+    case 4096:
+      cls = "App-higher";
+      break;
+    default:
+      cls = "App-empty";
+
+  }
+  return <td class={cls} >{number == 0 ? "" : number}</td>;
 }
 
 export default Table;

@@ -14,12 +14,13 @@ code {
 
 #table {
   border-spacing: 5px;
+  font-size: larger;
 }
 
 #table td {
   width: 50px;
   height: 50px;
-  border: 3px solid;
-  border-radius: 3px;
+  border: 1px solid darkslategray;
+  border-radius: 6px;
   
 }

@@ -1,5 +1,6 @@
 package org.dy.mmxlviii;
 
+import org.dy.mmxlviii.Game.Move;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

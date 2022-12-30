@@ -1,5 +1,6 @@
 package org.dy.mmxlviii;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Game {
@@ -7,7 +8,16 @@ public class Game {
     private int moveNr = 0, points = 0;
     private final int SIZE;
     private Random rand = new Random();
+    private ArrayList<Move> moves;
 
+    public class Move {
+        int[][] table;
+        int pointsWon;
+        int direction;
+        int newRow;
+        int newCol;
+        int newVal;
+    }
 
     public Game(Integer size) {
         SIZE = size;
@@ -17,6 +27,7 @@ public class Game {
                 table[i][j] = 0;
             }
         }
+        moves = new ArrayList<Move>();
         addRandomNumber();
         addRandomNumber();
     }
@@ -41,12 +52,12 @@ public class Game {
         return true;
     }
 
-    private void addRandomNumber() {
+    private Move addRandomNumber() {
         Integer num, val24;
         Integer x, y;
         num = rand.nextInt(100);
         if(isFinished()) {
-            return;
+            return null;
         }
 
         if(num < 75) {
@@ -54,16 +65,32 @@ public class Game {
         } else {
             val24 = 4;
         }
-
-        do {
-            
+        System.out.println("Num: " + num);
+        do {    
             x = rand.nextInt(SIZE);
             y = rand.nextInt(SIZE);
-            System.out.println("Num: " + num + ", x: " + x + ", y:" + y);
+            System.out.println("Val: " + val24 + ", x: " + x + ", y:" + y);
         } while(table[x][y] != 0);
     
         table[x][y] = val24;
 
+        Move m = new Move();
+        m.newCol = x;
+        m.newRow = y;
+        m.newVal = val24;
+        m.table = CopyTable(table);
+        moves.add(m);
+        return m;
+    }
+
+    public static int[][] CopyTable(int[][] table) {
+        if (table == null)
+            return null;
+        int[][] result = new int[table.length][];
+        for (int r = 0; r < table.length; r++) {
+            result[r] = table[r].clone();
+        }
+        return result;
     }
 
     public Boolean moveLeft() {
@@ -97,7 +124,9 @@ public class Game {
             }
         }
         if(moved) {
-            addRandomNumber();
+            Move m = addRandomNumber();
+            m.direction = 1;
+            m.table = CopyTable(table);
             moveNr++;
         }
         return moved;
@@ -134,7 +163,47 @@ public class Game {
             }
         }
         if(moved) {
-            addRandomNumber();
+            Move m = addRandomNumber();
+            m.direction = 2;
+            m.table = CopyTable(table);
+            moveNr++;
+        }
+        return moved;
+    }
+    public Boolean moveUp() {
+        Boolean moved = false;
+        for(int c = 0; c < SIZE; c++) {
+            Boolean merged = false;
+            for(int r = 0; r < SIZE; r++) {
+                int rb;
+                if(table[r][c] == 0) {
+                    continue;
+                }
+                for(rb = r; rb > 0; rb--) {
+                    if(table[rb-1][c] > 0) {
+                        break;
+                    }
+                    table[rb-1][c] = table[rb][c];
+                    table[rb][c] = 0;
+                    moved = true;
+                }
+                if(!merged) {
+                    if(rb > 0 && table[rb-1][c] > 0 && table[rb][c] == table[rb-1][c]) {
+                        table[rb-1][c] *= 2;
+                        table[rb][c] = 0;
+                        points += table[rb-1][c];
+                        merged = true;
+                        moved = true;
+                    }                    
+                } else {
+                    merged = false;
+                }
+            }
+        }
+        if(moved) {
+            Move m = addRandomNumber();
+            m.direction = 3;
+            m.table = CopyTable(table);
             moveNr++;
         }
         return moved;
@@ -171,47 +240,13 @@ public class Game {
             }
         }
         if(moved) {
-            addRandomNumber();
+            Move m = addRandomNumber();
+            m.direction = 4;
+            m.table = CopyTable(table);
+
             moveNr++;
         }
         return moved;
     }
     
-    public Boolean moveUp() {
-        Boolean moved = false;
-        for(int c = 0; c < SIZE; c++) {
-            Boolean merged = false;
-            for(int r = 0; r < SIZE; r++) {
-                int rb;
-                if(table[r][c] == 0) {
-                    continue;
-                }
-                for(rb = r; rb > 0; rb--) {
-                    if(table[rb-1][c] > 0) {
-                        break;
-                    }
-                    table[rb-1][c] = table[rb][c];
-                    table[rb][c] = 0;
-                    moved = true;
-                }
-                if(!merged) {
-                    if(rb > 0 && table[rb-1][c] > 0 && table[rb][c] == table[rb-1][c]) {
-                        table[rb-1][c] *= 2;
-                        table[rb][c] = 0;
-                        points += table[rb-1][c];
-                        merged = true;
-                        moved = true;
-                    }                    
-                } else {
-                    merged = false;
-                }
-            }
-        }
-        if(moved) {
-            addRandomNumber();
-            moveNr++;
-        }
-        return moved;
-    }
-
 }
